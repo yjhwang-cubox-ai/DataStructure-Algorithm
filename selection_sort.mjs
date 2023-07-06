@@ -14,7 +14,7 @@ function SelectSort(arr) {
     }
 }
 
-let arr = [5, 1, 4, 3, 2, 0];
+let arr = [3,5,1,2,4];
 
 console.log("============= 정렬 전 ===============")
 console.log(arr);
