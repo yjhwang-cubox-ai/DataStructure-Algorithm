@@ -1,47 +1,68 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct tagNode
-{
+typedef struct tagNode{
     int Data;
     struct tagNode* next;
-    
 } Node;
 
+Node* createNode(int data){
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->Data = data;
+    newNode->next = NULL;
 
-Node* CreateNode(int data){
-    Node* NewNode = (Node*)malloc(sizeof(Node));
-    NewNode->Data = data;
-    NewNode->next = NULL;
-
-    return NewNode;
+    return newNode;
 }
 
-void deleteNode(Node* node){
-    free(node);
-}
-
-void appendNode(Node** head, Node* newNode){
-    if ((*head)==NULL){
-        *head = newNode;
-    }else{
-        Node* tail = *head;
-        while(tail->next != NULL){
-            tail = tail->next;
+void appenNode(Node** head, Node* newnode){
+    if (*head == NULL){
+        *head = newnode;
+    }
+    else{
+        Node* currentnode = *head;
+        while(currentnode->next != NULL){
+            currentnode = currentnode->next;
         }
-        tail->next = newNode;
+        currentnode->next = newnode;
     }
 }
 
-Node* GetNodeAt(Node* head, int Location){
-    Node* current = head;
-    while(current != NULL && (--Location) >=0){
-        current = current->next;
+void insertNodefront(Node** head,  Node* newnode){
+    
+    if (*head == NULL){
+        *head = newnode;
+        return;
     }
-    return current;
+    newnode->next = *head;
+    *head = newnode;
 }
 
-void RemoveNode(Node** head, Node* remove){
+void inserNode(Node* current, Node* newnode){
+    newnode->next = current->next;
+    current->next = newnode;
+}
+
+void display(Node* head){
+    Node* currentNode = head;
+
+    while(currentNode != NULL){
+        printf("%d\t", currentNode->Data);
+        currentNode = currentNode->next;
+    }
+    printf("\n");
+}
+
+void removeAllNode(Node** head){
+    Node* deleteNode = NULL;
+
+    while(*head != NULL){
+        deleteNode = *head;
+        *head = (*head)->next;
+        free(deleteNode);
+    }
+}
+
+void removeNode(Node** head, Node* remove){
     if (*head == remove){
         *head = remove->next;
     }
@@ -50,47 +71,85 @@ void RemoveNode(Node** head, Node* remove){
         while(current != NULL && current->next != remove){
             current = current->next;
         }
-
         if (current != NULL){
             current->next = remove->next;
+            free(remove);
         }
     }
 }
 
-void insertAfter(Node* current, Node* newNode){
-    newNode->next = current->next;
-    current->next = newNode;
+Node* getNodeAt(Node** head, int location){
+    Node* currentNode = *head;
+    while(currentNode != NULL && location-- != 0){
+        currentNode = currentNode->next;
+    }
+    return currentNode;
 }
 
-int Count(Node* node){
-    int count = 0;
-    Node* current = node;
-    while(current != NULL){
-        current = current->next;
-        count ++;
+void insertNodeSort(Node** head, Node* newNode){
+    if(*head == NULL){
+        *head = newNode;
+        return;
     }
-    return count;
+    if(newNode->Data <= (*head)->Data){
+        newNode->next = *head;
+        *head = newNode;
+        return;
+    }
+
+    Node* current = *head;
+    Node* prev = NULL;
+    while(current->Data <= newNode->Data){
+        prev = current;
+        current = current->next;
+    }
+    inserNode(prev, newNode);
 }
+
 
 int main(){
+    Node* newnode = NULL;
     Node* List = NULL;
-    Node* newNode = NULL;
+
+    // newnode = createNode(200);
+    // insertNodefront(&List, newnode);
+    // newnode = createNode(10);
+    // appenNode(&List, newnode);
+    // newnode = createNode(20);
+    // appenNode(&List, newnode);
+    // newnode = createNode(30);
+    // appenNode(&List, newnode);
+    // newnode = createNode(100);
+    // insertNodefront(&List, newnode);
+    // display(List);
+
+    newnode = createNode(200);
+    insertNodeSort(&List, newnode);
+    newnode = createNode(10);
+    insertNodeSort(&List, newnode);
+    newnode = createNode(20);
+    insertNodeSort(&List, newnode);
+    newnode = createNode(30);
+    insertNodeSort(&List, newnode);
+    newnode = createNode(100);
+    insertNodeSort(&List, newnode);
+    display(List);
+
     
-    newNode = CreateNode(1);
-    appendNode(&List, newNode);
-    newNode = CreateNode(2);
-    appendNode(&List, newNode);
-    newNode = CreateNode(3);
-    appendNode(&List, newNode);
-    Node* a = GetNodeAt(List, 1);    
-    printf("%d\n", a->Data);
-    RemoveNode(&List, a);
-    Node* b = GetNodeAt(List, 0);
-    newNode = CreateNode(100);
-    insertAfter(b, newNode);
+    Node* remove = getNodeAt(&List, 3);
+    removeNode(&List, remove);
+    display(List);
 
-    int aa = Count(List);
-    printf("%d\n",aa);
+    Node* insert = getNodeAt(&List, 2);
+    newnode = createNode(1000);
+    inserNode(insert, newnode);
+    display(List);    
+   
+    Node* test = getNodeAt(&List, 2);
+    printf("%d\n", test->Data);
 
+    removeAllNode(&List);
+    display(List);
+    
     return 0;
 }
