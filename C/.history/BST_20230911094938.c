@@ -3,8 +3,8 @@
 
 typedef struct tree{
     int val;
-    struct tree* left;
-    struct tree* right;
+    tree* left;
+    tree* right;
 }tree;
 
 tree* addNode(tree*t , int data){
@@ -21,8 +21,7 @@ tree* addNode(tree*t , int data){
         if(data > t->val){
             t->right = addNode(t->right, data);
         }
-    }
-    return t;
+    }    
 }
 
 tree* remove(tree* t, int delData){
@@ -60,11 +59,4 @@ tree* remove(tree* t, int delData){
 
     }
     return t;
-}
-
-int main(){
-    tree* a = NULL;
-    addNode(a, 1);
-    addNode(a, 2);
-    addNode(a, 3);
 }

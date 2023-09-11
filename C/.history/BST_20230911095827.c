@@ -3,8 +3,8 @@
 
 typedef struct tree{
     int val;
-    struct tree* left;
-    struct tree* right;
+    tree* left;
+    tree* right;
 }tree;
 
 tree* addNode(tree*t , int data){
