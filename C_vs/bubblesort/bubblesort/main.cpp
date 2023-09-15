@@ -66,14 +66,6 @@ void quick_sort(int DataSet[], int left, int right) {
 		quick_sort(DataSet, pL, right);\
 }
 
-void mergeSort(int* arr, int size)
-{
-	int* arrMerge = (int*)malloc(sizeof(int) * size);
-	mergeSortUtil(arr, arrMerge, 0, size - 1);
-	free(arrMerge);
-
-}
-
 void merge(int* arr, int* arrMerge, int left, int mid, int right)
 {
 	int idx1 = left;
@@ -85,11 +77,12 @@ void merge(int* arr, int* arrMerge, int left, int mid, int right)
 	}
 	while (idx1 <= mid && idx2 <= right) {
 		if (arrMerge[idx1] < arrMerge[idx2])
-			arr[idxM++] = arrMerge[idx1];
+			arr[idxM++] = arrMerge[idx1++];
 		else
-			arr[idxM++] = arrMerge[idx2];
+			arr[idxM++] = arrMerge[idx2++];
 	}
-	while (idx1 )
+	while (idx1 <= mid)
+		arr[idxM++] = arrMerge[idx1++];
 
 }
 
@@ -98,18 +91,18 @@ void mergeSortUtil(int* arr, int* arrMerge, int left, int right) {
 	if (left < right) {
 		mid = (left + right) / 2;
 		mergeSortUtil(arr, arrMerge, left, mid);
-		mergeSortUtil(arr, arrMerge, mid+1, right);
+		mergeSortUtil(arr, arrMerge, mid + 1, right);
 		merge(arr, arrMerge, left, mid, right);
 	}
 }
 
+void mergeSort(int* arr, int size)
+{
+	int* arrMerge = (int*)malloc(sizeof(int) * size);
+	mergeSortUtil(arr, arrMerge, 0, size - 1);
+	free(arrMerge);
 
-
-
-
-
-
-
+}
 
 
 //int main() {
@@ -131,44 +124,49 @@ void mergeSortUtil(int* arr, int* arrMerge, int left, int right) {
 //}
 
 //정렬된 2개의 배열을 병합
-void merge(int* arr1, int size1, int* arr2, int size2, int* arrMerge)
-{
-	int idx1 = 0;
-	int	idx2 = 0;
-	int idxM = 0;
-	while (idx1 < size1 && idx2 < size2)
-	{
-		if (arr1[idx1] < arr2[idx2])
-		{
-			arrMerge[idxM] = arr1[idx1];
-			idxM++;
-			idx1++;
-		}
-		else
-		{
-			arrMerge[idxM] = arr2[idx2];
-			idxM++;
-			idx2++;
-		}
-	}
-	while (idx1 < size1) arrMerge[idxM++] = arr1[idx1++];
-	while (idx2 < size2) arrMerge[idxM++] = arr2[idx2++];
-
-
-}
+//void merge(int* arr1, int size1, int* arr2, int size2, int* arrMerge)
+//{
+//	int idx1 = 0;
+//	int	idx2 = 0;
+//	int idxM = 0;
+//	while (idx1 < size1 && idx2 < size2)
+//	{
+//		if (arr1[idx1] < arr2[idx2])
+//		{
+//			arrMerge[idxM] = arr1[idx1];
+//			idxM++;
+//			idx1++;
+//		}
+//		else
+//		{
+//			arrMerge[idxM] = arr2[idx2];
+//			idxM++;
+//			idx2++;
+//		}
+//	}
+//	while (idx1 < size1) arrMerge[idxM++] = arr1[idx1++];
+//	while (idx2 < size2) arrMerge[idxM++] = arr2[idx2++];
+//
+//
+//}
 
 int main() {
-	int arr1[6] = { 2,4,7,9,11,15 };
+	/*int arr1[6] = { 2,4,7,9,11,15 };
 	int arr2[6] = { 1,5,8,14,19,21 };
-	int arrMerge[12];
+	int arrMerge[12];*/
 
-	merge(arr1, 6, arr2, 6, arrMerge);
+	int arr[8] = { 7,5,2,4,1,3,8,6 };
 
-	int Length = sizeof arrMerge / sizeof arrMerge[0];
+	//merge(arr1, 6, arr2, 6, arrMerge);
+
+	int Length = sizeof arr / sizeof arr[0];
+
+	mergeSort(arr, Length);
 
 	for (int i = 0; i < Length; i++) {
-		printf("%d\t", arrMerge[i]);
+		printf("%d ", arr[i]);
 	}
+	printf("\n");
 
 	return 0;
 
